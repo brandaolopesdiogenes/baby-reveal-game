@@ -1,3 +1,5 @@
+"use client";
+
 import { useState } from "react";
 const Card = ({ children }) => (
   <div className="bg-white rounded-2xl shadow-xl p-6 w-full max-w-xl">
