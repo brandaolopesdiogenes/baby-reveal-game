@@ -8,48 +8,95 @@ export default function BabyRevealGame() {
 
   const nextLevel = () => setLevel((prev) => prev + 1);
 
+  const shuffle = (arr) => [...arr].sort(() => Math.random() - 0.5);
+
   const ImgBtn = ({ emoji, onClick }) => (
-    <button
-      onClick={onClick}
-      className="text-3xl p-4 rounded-xl bg-white shadow hover:scale-110 transition"
-    >
+    <button onClick={onClick} className="text-3xl p-4 rounded-xl bg-white shadow hover:scale-110 transition">
       {emoji}
     </button>
   );
 
-  // -------- LEVEL 0 (ESCOLHA QUEM É) --------
+  // -------- LEVEL 0 --------
   const Level0 = () => {
-    const roles = [
-      "Primo(a)",
-      "Tio(a)",
-      "Avô(ó)",
-      "Irmão(ã)",
-      "Amigo(a)"
-    ];
-
+    const roles = ["Primo(a)", "Tio(a)", "Avô(ó)", "Irmão(ã)", "Amigo(a)"];
     return (
       <div className="space-y-4">
         <p>Quem é você na família?</p>
         <div className="grid grid-cols-2 gap-2">
           {roles.map((r) => (
-            <Button
-              key={r}
-              onClick={() => {
-                setRole(r);
-                nextLevel();
-              }}
-            >
-              {r}
-            </Button>
+            <Button key={r} onClick={() => { setRole(r); nextLevel(); }}>{r}</Button>
           ))}
         </div>
       </div>
     );
   };
 
-  // -------- LEVEL 1 --------
-  const Level1 = () => {
-    const items = ["👶", "👶", "👶", "👶", "🍼"];
+  // -------- PERGUNTAS TEXTUAIS (COM SHUFFLE) --------
+
+  const LevelQ1 = () => {
+    const options = shuffle(["1, 1 e 14", "1, 2 e 14", "1, 2 e 15", "3, 7 e 12", "5, 10 e 15"]);
+    return (
+      <div className="space-y-4">
+        <p>Qual idade dos nossos filhos?</p>
+        {options.map((o, i) => (
+          <Button key={i} onClick={() => o === "1, 1 e 14" && nextLevel()}>{o}</Button>
+        ))}
+      </div>
+    );
+  };
+
+  const LevelQ2 = () => {
+    const options = shuffle(["José e José", "Carlos e João", "Pedro e Marcos", "Luis e Paulo", "André e Bruno"]);
+    return (
+      <div className="space-y-4">
+        <p>Qual o nome dos avôs?</p>
+        {options.map((o, i) => (
+          <Button key={i} onClick={() => o === "José e José" && nextLevel()}>{o}</Button>
+        ))}
+      </div>
+    );
+  };
+
+  const LevelQ3 = () => {
+    const options = shuffle(["Josefa e Geraldina", "Marli e Geraldina", "Ana e Maria", "Clara e Joana", "Beatriz e Paula"]);
+    return (
+      <div className="space-y-4">
+        <p>Qual o nome das avós?</p>
+        {options.map((o, i) => (
+          <Button key={i} onClick={() => o === "Josefa e Geraldina" && nextLevel()}>{o}</Button>
+        ))}
+      </div>
+    );
+  };
+
+  const LevelQ4 = () => {
+    const options = shuffle(["Caleb", "Rex", "Thor", "Max", "Bob"]);
+    return (
+      <div className="space-y-4">
+        <p>Qual o nome do cachorro que já tivemos?</p>
+        {options.map((o, i) => (
+          <Button key={i} onClick={() => o === "Caleb" && nextLevel()}>{o}</Button>
+        ))}
+      </div>
+    );
+  };
+
+  const LevelQ5 = () => {
+    const options = shuffle(["Comida Salgada", "Chocolate", "Doce", "Pizza", "Sorvete"]);
+    return (
+      <div className="space-y-4">
+        <p>O que a mamãe mais quis comer nessa gravidez?</p>
+        {options.map((o, i) => (
+          <Button key={i} onClick={() => o === "Comida Salgada" && nextLevel()}>{o}</Button>
+        ))}
+      </div>
+    );
+  };
+
+  // -------- JOGOS VISUAIS --------
+
+  const LevelG1 = () => {
+    const items = shuffle(["👶", "👶", "👶", "👶", "🍼"]);
     return (
       <div className="space-y-4">
         <p>Encontre o diferente</p>
@@ -62,9 +109,8 @@ export default function BabyRevealGame() {
     );
   };
 
-  // -------- LEVEL 2 --------
-  const Level2 = () => {
-    const options = ["🍫", "🍕", "🍔", "🍰", "🍗"];
+  const LevelG2 = () => {
+    const options = shuffle(["🍫", "🍕", "🍔", "🍰", "🍗"]);
     return (
       <div className="space-y-4">
         <p>O que a mamãe mais quis comer?</p>
@@ -77,82 +123,22 @@ export default function BabyRevealGame() {
     );
   };
 
-  // -------- LEVEL 3 --------
-  const Level3 = () => {
-    const sequence = ["⭐", "🌙", "⭐"];
-    const [input, setInput] = useState([]);
-
+  const LevelG3 = () => {
+    const options = shuffle(["🤰", "🧸", "👟", "⌚", "🕶️"]);
     return (
       <div className="space-y-4">
-        <p>Repita a sequência</p>
-        <p className="text-2xl">{sequence.join(" ")}</p>
-        <div className="flex gap-2 justify-center">
-          {["⭐", "🌙"].map((s) => (
-            <ImgBtn key={s} emoji={s} onClick={() => setInput([...input, s])} />
-          ))}
-        </div>
-
-        {input.length === sequence.length && (
-          <div>
-            {JSON.stringify(input) === JSON.stringify(sequence) ? (
-              <Button onClick={nextLevel}>Avançar</Button>
-            ) : (
-              <p>Errado 😅</p>
-            )}
-          </div>
-        )}
-      </div>
-    );
-  };
-
-  // -------- LEVEL 4 --------
-  const Level4 = () => {
-    const options = ["🌅", "🌇", "🌙", "🌃", "⏰"];
-    return (
-      <div className="space-y-4">
-        <p>Qual período é mais tranquilo?</p>
+        <p>Qual representa a gestação?</p>
         <div className="grid grid-cols-5 gap-2">
           {options.map((o, i) => (
-            <ImgBtn key={i} emoji={o} onClick={() => o === "🌙" && nextLevel()} />
+            <ImgBtn key={i} emoji={o} onClick={() => o === "🤰" && nextLevel()} />
           ))}
         </div>
       </div>
     );
   };
 
-  // -------- LEVEL 5 --------
-  const Level5 = () => {
-    const options = ["🚗", "📱", "🍼", "💻", "🔑"];
-    return (
-      <div className="space-y-4">
-        <p>Escolha o item correto</p>
-        <div className="grid grid-cols-5 gap-2">
-          {options.map((o, i) => (
-            <ImgBtn key={i} emoji={o} onClick={() => o === "🍼" && nextLevel()} />
-          ))}
-        </div>
-      </div>
-    );
-  };
-
-  // -------- LEVEL 6 --------
-  const Level6 = () => {
-    const options = ["👔", "🍼", "👞", "⌚", "🕶️"];
-    return (
-      <div className="space-y-4">
-        <p>Qual é comum no enxoval?</p>
-        <div className="grid grid-cols-5 gap-2">
-          {options.map((o, i) => (
-            <ImgBtn key={i} emoji={o} onClick={() => o === "🍼" && nextLevel()} />
-          ))}
-        </div>
-      </div>
-    );
-  };
-
-  // -------- LEVEL 7 --------
-  const Level7 = () => {
-    const options = ["🐶", "🐱", "👶", "🐭", "🐹"];
+  const LevelG4 = () => {
+    const options = shuffle(["🐶", "🐱", "👶", "🐭", "🐹"]);
     return (
       <div className="space-y-4">
         <p>Encontre o correto</p>
@@ -165,61 +151,35 @@ export default function BabyRevealGame() {
     );
   };
 
-  // -------- LEVEL 8 --------
-  const Level8 = () => {
-    const options = ["🛏️", "🧸", "🍼", "🪑", "📺"];
-    return (
-      <div className="space-y-4">
-        <p>O que ajuda no sono?</p>
-        <div className="grid grid-cols-5 gap-2">
-          {options.map((o, i) => (
-            <ImgBtn key={i} emoji={o} onClick={() => o === "🍼" && nextLevel()} />
-          ))}
-        </div>
-      </div>
-    );
-  };
-
-  // -------- LEVEL 9 --------
-  const Level9 = () => {
-    const options = ["🎮", "🍼", "🖱️", "⌨️", "🎧"];
-    return (
-      <div className="space-y-4">
-        <p>Qual é essencial?</p>
-        <div className="grid grid-cols-5 gap-2">
-          {options.map((o, i) => (
-            <ImgBtn key={i} emoji={o} onClick={() => o === "🍼" && nextLevel()} />
-          ))}
-        </div>
-      </div>
-    );
-  };
-
   // -------- FINAL --------
-  const Level10 = () => (
-    <div className="text-3xl font-bold text-blue-600">
-      🎉 Parabéns! Você vai ser {role} de MENINO 💙👶
+  const LevelFinal = () => (
+    <div className="flex flex-col items-center gap-4 bg-gradient-to-br from-pink-100 to-pink-300 p-6 rounded-xl">
+      <div className="text-5xl animate-bounce">👶🎀</div>
+      <div className="text-3xl font-bold text-pink-600">
+        🎉 Parabéns! Você vai ser {role} de MENINA 💖👶
+      </div>
     </div>
   );
 
+  // -------- ORDEM INTERCALADA --------
   const levels = [
     Level0,
-    Level1,
-    Level2,
-    Level3,
-    Level4,
-    Level5,
-    Level6,
-    Level7,
-    Level8,
-    Level9,
-    Level10
+    LevelG1,
+    LevelQ1,
+    LevelG2,
+    LevelQ2,
+    LevelG3,
+    LevelQ3,
+    LevelG4,
+    LevelQ4,
+    LevelQ5,
+    LevelFinal
   ];
 
   const Current = levels[level];
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-100 to-pink-100 p-4">
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 p-4">
       <Card className="w-full max-w-xl rounded-2xl shadow-xl">
         <CardContent className="p-6 text-center space-y-6">
           <h1 className="text-2xl font-bold">Descubra o segredo 👶</h1>
