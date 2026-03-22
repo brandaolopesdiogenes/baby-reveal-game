@@ -1,6 +1,20 @@
 import { useState } from "react";
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+const Card = ({ children }) => (
+  <div className="bg-white rounded-2xl shadow-xl p-6 w-full max-w-xl">
+    {children}
+  </div>
+);
+
+const CardContent = ({ children }) => <div>{children}</div>;
+
+const Button = ({ children, onClick }) => (
+  <button
+    onClick={onClick}
+    className="w-full p-3 rounded-xl bg-gray-100 hover:bg-gray-200 transition"
+  >
+    {children}
+  </button>
+);
 
 export default function BabyRevealGame() {
   const [level, setLevel] = useState(0);
